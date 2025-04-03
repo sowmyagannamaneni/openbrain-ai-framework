@@ -1,6 +1,5 @@
 import os
 import zipfile
-import pathlib
 import shutil
 import nibabel as nib
 import numpy as np
@@ -57,7 +56,6 @@ for file in os.listdir(f"{RAW_DIR}/labelsTr"):
         nib.save(nib.Nifti1Image(data, img.affine, img.header), path)
 
 # === Compress .nii to .nii.gz ===
-import gzip
 def compress_nii_files(directory):
     for root, _, files in os.walk(directory):
         for file in files:
