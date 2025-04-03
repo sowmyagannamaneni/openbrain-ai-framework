@@ -154,3 +154,11 @@ def trainer_run(args, model, snapshot_path, multimask_output, low_res):
 
     writer.close()
     return "Training Finished!"
+# === Training ===
+trainer_run(args, net, args['output'], multimask_output, low_res)
+
+# === Post-Training Evaluation ===
+os.makedirs("/content/testing_log", exist_ok=True)
+checkpoint_path = os.path.join(args["output"], 'epoch_19.pth')  # Adjust if needed
+log_path = "/content/testing_log/epoch_19_log.txt"
+run_test_and_plot(adapt_ckpt_path=checkpoint_path, log_file_path=log_path)
