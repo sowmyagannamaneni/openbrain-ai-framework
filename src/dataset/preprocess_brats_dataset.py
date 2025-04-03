@@ -1,10 +1,5 @@
-import nibabel as nib
 import numpy as np
 import os
-import pickle
-from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
-import pandas as pd
 import zipfile
 import shutil
 
@@ -14,9 +9,6 @@ dataset_directory = '/content/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingDa
 test_size = 20
 val_size = 10
 train_size = 70
-
-# Initialize the scaler
-scaler = StandardScaler()
 
 def extract_and_prepare_directories(zip_path, dataset_directory, test_size, val_size, train_size):
     print("Extracting zip file and preparing directories...")
