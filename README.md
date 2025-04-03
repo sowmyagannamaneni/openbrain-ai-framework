@@ -8,7 +8,7 @@
 ## 🗂️ Project Structure
 
 - **src/** – Python scripts for data processing, model training, and inference.
-- **models/** – Pretrained model weights (if shared).
+- **models/** – Pretrained model weights.
 - **results/** – Sample segmentation outputs and evaluation metrics.
 - **report/** – Technical report summarizing findings and experiments.
 
