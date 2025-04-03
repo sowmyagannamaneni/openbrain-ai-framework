@@ -1,44 +1,35 @@
 import os
 import random
-import h5py
 import numpy as np
 import torch
+import pickle
+import nibabel as nib
 from scipy import ndimage
 from scipy.ndimage.interpolation import zoom
 from torch.utils.data import Dataset
-from einops import repeat
-from icecream import ic
-import pandas as pd
-import pickle
-import PIL.Image
-import PIL.ImageOps
-import PIL.ImageEnhance
-import PIL.ImageDraw
 import cv2
-import nibabel as nib
-from sklearn.preprocessing import StandardScaler
+import pandas as pd
 
+# Paths and config
 HU_min, HU_max = -200, 250
 data_mean = 50.21997497685108
 data_std = 68.47153712416372
-scaler = StandardScaler()
 
+# Function to load image
 def read_image(path):
     with open(path, 'rb') as file:
         img = pickle.load(file)
         return img
 
-# [Other augmentation and dataset class definitions remain unchanged]
-
+# Function to load NIfTI image
 def load_nifti_image(filepath):
-    print(f"Loading NIfTI image from {filepath}")
     image = nib.load(filepath)
     data = image.get_fdata()
     data = np.nan_to_num(data, nan=0.0, posinf=0.0, neginf=0.0)
     return data
 
+# Function to normalize image
 def normalize_image(image, data_type):      
-    print(f"Normalizing image data for {data_type}...")
     original_shape = image.shape
     reshaped_data = image.reshape(-1, original_shape[2])
     if data_type == 'train':
@@ -48,12 +39,12 @@ def normalize_image(image, data_type):
     scaled_data = scaled_data.reshape(original_shape)
     return scaled_data
 
+# Function to clean data
 def clean_data(data):
-    print("Cleaning data...")
     return np.nan_to_num(data, nan=0.0, posinf=0.0, neginf=0.0)
 
+# Function to prepare CSV for train/validation/test
 def prepare_csv(patients_folders, data_type, dataset_directory):
-    print(f"Data Processing has been started. Preparing CSV for {data_type} data...")
     modality = "t1"
     csv_obj = {}
     image_paths = []
@@ -68,13 +59,10 @@ def prepare_csv(patients_folders, data_type, dataset_directory):
 
         image_path = os.path.join(dataset_directory, patient, f"{patient}_{modality}.nii")
         mask_path = os.path.join(dataset_directory, patient, f"{patient}_seg.nii")
-        if patient_number == '355':
-            mask_path = os.path.join(dataset_directory, patient, f"W39_1998.09.19_Segm.nii")
 
         image_data = load_nifti_image(image_path)
         mask_data = load_nifti_image(mask_path)
 
-        print("Processing for patient: " + patient_number)
         img_arr = np.concatenate((image_data[:, :, 0:1], image_data[:, :, 0:1], image_data,
                                   image_data[:, :, -1:], image_data[:, :, -1:]), axis=-1)
         mask_arr = np.concatenate((mask_data[:, :, 0:1], mask_data[:, :, 0:1], mask_data,
@@ -102,15 +90,16 @@ def prepare_csv(patients_folders, data_type, dataset_directory):
     csv_obj = {'image_pth': image_paths, 'mask_pth': mask_paths}
     return csv_obj
 
+# Function to create CSV files
 def create_csv_file(csv_data, file_type):
-    print(f"Creating CSV file for {file_type} data...")
     df = pd.DataFrame(csv_data)
     os.makedirs("data", exist_ok=True)
     df.to_csv(f"data/{file_type}.csv", index=False)
+
+# Main function to run
 if __name__ == "__main__":
     zip_path = "/content/drive/MyDrive/dataset_brats/archive.zip"
     dataset_directory = "/content/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData"
-
 
     test_size = 20
     val_size = 10
