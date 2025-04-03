@@ -107,3 +107,18 @@ def create_csv_file(csv_data, file_type):
     df = pd.DataFrame(csv_data)
     os.makedirs("data", exist_ok=True)
     df.to_csv(f"data/{file_type}.csv", index=False)
+if __name__ == "__main__":
+    zip_path = "/content/drive/MyDrive/dataset_brats/archive.zip"
+    dataset_directory = "/content/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData"
+
+
+    test_size = 20
+    val_size = 10
+    train_size = 70
+
+    from data_utils import extract_and_prepare_directories  # if separated
+    train_patients, val_patients, test_patients = extract_and_prepare_directories(zip_path, dataset_directory, test_size, val_size, train_size)
+
+    create_csv_file(prepare_csv(train_patients, 'train', dataset_directory), 'training')
+    create_csv_file(prepare_csv(val_patients, 'validation', dataset_directory), 'validation')
+    create_csv_file(prepare_csv(test_patients, 'test', dataset_directory), 'test')
