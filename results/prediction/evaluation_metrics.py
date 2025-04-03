@@ -46,3 +46,11 @@ def plot_metrics(metrics):
     plt.show()
 
 plot_metrics(metrics)
+# Print metrics without dice score
+def print_metrics(metrics):
+    for metric, values in metrics.items():
+        if metric != "dice_score":
+            print(f"{metric.capitalize()}: {np.mean(values):.4f}")
+
+# Call printing function
+print_metrics(metrics)
