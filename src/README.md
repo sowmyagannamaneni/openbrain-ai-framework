@@ -17,7 +17,7 @@ drive.mount('/content/drive')
 
 ### 2. Download the Dataset
 
-Download the BraTS2020 dataset from [this link](https://www.kaggle.com/datasets/awsaf49/brats20-dataset-training-validation) and upload it to your Google Drive or Colab environment. Set the dataset and validation paths accordingly:
+Download the BraTS2020 dataset from https://www.kaggle.com/datasets/awsaf49/brats20-dataset-training-validation and upload it to your Google Drive or Colab environment. Set the dataset and validation paths accordingly:
 
 ```python
 dataset_dir = '/content/BraTS2020_TrainingData/MICCAI_BraTS2020_TrainingData'
@@ -38,17 +38,10 @@ After installing the packages, restart the runtime.
 
 Open and run the provided Jupyter notebook:
 
-1. Upload the notebook file `GE19020206054_Barelgudu_nnunet_t.ipynb` to Colab.
+1. Upload the notebook files to Colab.
 2. Open the notebook in Colab.
 3. Follow the instructions and run the cells step-by-step, ensuring the paths are correctly set for your dataset.
 
-## Project Structure
-
-- **nnUNet-BraTS2020/**
-  - `GE19020206054_Barelgudu_nnunet_t.ipynb`: The main notebook containing the implementation of nnUNet for brain tumor segmentation.
-  - `data/`: Directory to store the BraTS2020 dataset.
-  - `results/`: Directory to save the model outputs and evaluation results.
-  - `requirements.txt`: File containing the list of required packages.
 
 ## References
 
